@@ -60,11 +60,11 @@ class ComponentSocket extends Thread {
                         Log.e(MainActivity.TAG, "Received raw: <" + kvList.encodedString() + ">");
                         //Tell the activity that a new message has been received.
                         Message msg = callback.obtainMessage(MainActivity.MESSAGE_RECEIVED);
-                        msg.obj = kvList.toString();
+                        msg.obj = kvList;
                         callback.sendMessage(msg);
-                        if(!kvList.getValue("MessageType").equalsIgnoreCase("Confirm")){
-                            uploader(kvList);
-                        }
+//                        if(!kvList.getValue("MessageType").equalsIgnoreCase("Confirm")){
+//                            uploader(kvList);
+//                        }
                     }
                 }
             } catch (Exception e) {

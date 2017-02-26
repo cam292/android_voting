@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     static Handler callbacks = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            String str;
+            KeyValueList kvList;
             String[] strs;
             switch (msg.what) {
                 case CONNECTED:
@@ -58,8 +58,9 @@ public class MainActivity extends AppCompatActivity {
                     Log.e(TAG, "===============================================================DISCONNECTED" );
                     break;
                 case MESSAGE_RECEIVED:
-                    str = (String)msg.obj;
-                    messageReceivedListText.append(str+"********************\n");
+                    kvList = (KeyValueList)msg.obj;
+                    processMessage(kvList);
+                    messageReceivedListText.append(kvList.toString()+"********************\n");
                     final int scrollAmount = messageReceivedListText.getLayout().getLineTop(messageReceivedListText.getLineCount()) - messageReceivedListText.getHeight();
                     if (scrollAmount > 0)
                         messageReceivedListText.scrollTo(0, scrollAmount);
@@ -128,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    //Generate a test register message, please replace something of attributes with your own.
+    //Generate a register message
     KeyValueList generateRegisterMessage(){
         KeyValueList list = new KeyValueList();
         //Set the scope of the message
@@ -141,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         list.putPair("Role","Basic");
         return list;
     }
-    //Generate a test connect message, please replace something of attributes with your own.
+    //Generate a connect message
     KeyValueList generateConnectMessage(){
         KeyValueList list = new KeyValueList();
         //Set the scope of the message
@@ -155,5 +156,10 @@ public class MainActivity extends AppCompatActivity {
         //Set the name of the component
         list.putPair("Name",SENDER);
         return list;
+    }
+
+    //Process message received from input processor
+    static void processMessage(KeyValueList kvList){
+        return;
     }
 }
