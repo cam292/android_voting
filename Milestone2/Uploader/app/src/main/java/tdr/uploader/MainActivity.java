@@ -13,8 +13,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
+//import java.util.TimerTask;
 
 /*
     A demo Activity, which shows how to build a connection with SIS server, register itself to the server,
@@ -160,6 +160,22 @@ public class MainActivity extends AppCompatActivity {
 
     //Process message received from input processor
     static void processMessage(KeyValueList kvList){
+        int id = Integer.parseInt(kvList.getValue("MsgID"));
+        switch (id){
+            case 701: //cast vote message
+                String number = kvList.getValue("VoterPhoneNo");
+                String poster = kvList.getValue("CandidateId");
+                break;
+            case 702: //request report. tally votes
+                break;
+            case 703: //init tally table
+                String CandidateList = kvList.getValue("CandidateList");
+                String CandidateIDs[] = CandidateList.split("[;]");
+                List<String> CandidateID = Arrays.asList(CandidateIDs);
+                break;
+            case 22: //kill component
+                break;
+        }
         return;
     }
 }
