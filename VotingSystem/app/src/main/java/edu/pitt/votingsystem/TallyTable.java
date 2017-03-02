@@ -1,10 +1,12 @@
-/**************************************
- * Class TallyTable:
- * Stores voters' numbers and VoterId they voted for.
- * Also stores the VoterId and number of votes for that id
- ***************************************/
-class TallyTable {
+package edu.pitt.votingsystem;
 
+import java.util.*;
+
+/**
+ * Created by craigmazzotta on 3/1/17.
+ */
+
+public class TallyTable {
     HashMap<String, String> Voters;  		//<Voterphone#, VoterID>
     HashMap<String, Integer> Votes;		 	//<VoterID, #ofVotes>
     //List<String> candidates;
@@ -20,7 +22,6 @@ class TallyTable {
         for(String c : cand){ //initialize votes for each id to 0
             Votes.put(c, 0);
         }
-        //candidates = cand;
 
     }
 
@@ -38,7 +39,8 @@ class TallyTable {
             }
             else { //add voter and cast vote
                 Voters.put(voterNum, candID);
-                Votes.put(candID, Votes.get(candID) + 1);
+                int numVotes = Votes.get(candID);
+                Votes.put(candID, numVotes + 1);
 
                 return 1;
             }
@@ -51,19 +53,28 @@ class TallyTable {
     *
     * @return result The sorted HashMap of candIds and their votes.
      */
-    public HashMap<String, Integer> getWinners() {
+    public HashMap<String,Integer> getWinner() {
+        HashMap<String, Integer> map = sortByValues(Votes);
+        return map;
+    }
 
-        List<HashMap.Entry<String, Integer>> list = new LinkedList<HashMap.Entry<String, Integer>>( Votes.entrySet() );
-        Collections.sort( list, new Comparator<HashMap.Entry<String, Integer>>()
-        {
-            public int compare( HashMap.Entry<String, Integer> o1, HashMap.Entry<String, Integer> o2 )
-                {return (o1.getValue()).compareTo( o2.getValue() );}
-        } );
+    private static HashMap sortByValues(HashMap map) {
+        List list = new LinkedList(map.entrySet());
+        // Defined Custom Comparator here
+        Collections.sort(list, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                return ((Comparable) ((Map.Entry) (o2)).getValue())
+                        .compareTo(((Map.Entry) (o1)).getValue());
+            }
+        });
 
-        HashMap<String, Integer> result = new LinkedHashMap<String, Integer>();
-        for (HashMap.Entry<String, Integer> entry : list) {
-            result.put( entry.getKey(), entry.getValue() );
+        // Here I am copying the sorted list in HashMap
+        // using LinkedHashMap to preserve the insertion order
+        HashMap sortedHashMap = new LinkedHashMap();
+        for (Iterator it = list.iterator(); it.hasNext();) {
+            Map.Entry entry = (Map.Entry) it.next();
+            sortedHashMap.put(entry.getKey(), entry.getValue());
         }
-        return result;
+        return sortedHashMap;
     }
 }
