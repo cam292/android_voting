@@ -40,23 +40,28 @@ public class SmsReceiver extends BroadcastReceiver {
                     String message = sb.toString();
                     String[] msg = message.split(",");
                     SmsManager smsManager = SmsManager.getDefault();
+                    edu.pitt.votingsystem.MainActivity.statusText.setText(msg[0]);
+
 
                     switch(msg[0]){
                         case "702": //request report. aka end voting
-                            if(msg[1] == "1234"){
+                            if(msg[1].equals("1234")){
                                 edu.pitt.votingsystem.MainActivity.printWinner();
                             } else {
                                 smsManager.sendTextMessage(sender,null, "Incorrect password",null,null);
                             }
                             break;
                         case "703": //init tally table. message will be {'msgId', 'passcode', 'list of candidates'}
-                            if(msg[1] == "1234"){
-                                edu.pitt.votingsystem.MainActivity.tally = new TallyTable(Arrays.copyOfRange(msg,1,msg.length-1));
+
+                            if(msg[1].equals("1234")){
+                                edu.pitt.votingsystem.MainActivity.statusText.setText("Tally table initialized");
+                                edu.pitt.votingsystem.MainActivity.tally = new TallyTable(Arrays.copyOfRange(msg,2,msg.length));
                             } else {
                                 smsManager.sendTextMessage(sender,null, "Incorrect password",null,null);
                             }
                             break;
                         default:
+                            edu.pitt.votingsystem.MainActivity.statusText.setText("Received vote");
                             switch (edu.pitt.votingsystem.MainActivity.tally.castVote(sender, message)) {//try to cast vote
                                 case 1: //successful vote
                                     Toast.makeText(context, "successful vote", Toast.LENGTH_SHORT).show();
@@ -71,6 +76,7 @@ public class SmsReceiver extends BroadcastReceiver {
                                     smsManager.sendTextMessage(sender, null, "Invalid candidate entered. Please try again", null, null);
                                     break;
                             }
+                            break;
                     }
 
 

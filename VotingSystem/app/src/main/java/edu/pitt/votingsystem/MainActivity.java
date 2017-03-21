@@ -13,11 +13,10 @@ import java.util.*;
 
 public class MainActivity extends AppCompatActivity {
     private static Button startButton, endButton;
-    private static EditText candListInput, adminPass;
-    private static TextView statusText,candList;
+    private static EditText adminPass;
+    public static TextView statusText;
 
     public static boolean voteSession;
-    private SmsReceiver SmsReceiver = new SmsReceiver();
     public static TallyTable tally;
     public static String status;
 
@@ -26,33 +25,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        voteSession = false;
+
         startButton = (Button) findViewById(R.id.Startbutton);
         endButton = (Button) findViewById(R.id.Endbutton);
         statusText = (TextView)findViewById(R.id.statusText);
-        candList = (TextView)findViewById(R.id.candList);
-        candListInput = (EditText) findViewById(R.id.candListInput);
         adminPass = (EditText) findViewById(R.id.adminPass);
 
         //logic to start voting
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String tempCandidates = candListInput.getText().toString();
                 if(voteSession){
                     Toast.makeText(getApplicationContext(), "Voting System Already Started!", Toast.LENGTH_SHORT).show();
                 }
-                else if(tempCandidates.length() != 0){
-                    //List candidates = Arrays.asList(tempCandidates.split(","));
-                    //tally = new TallyTable(candidates);
+                else{
                     voteSession = true;
                     status = "Polling for messages";
                     statusText.setText(status);
-                    candList.setText(tempCandidates);
                     Toast.makeText(getApplicationContext(), "Voting System Started", Toast.LENGTH_SHORT).show();
-                    candListInput.setText("");
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Please enter a list of candidates, separated by commas.", Toast.LENGTH_SHORT).show();
                 }
 
             }
