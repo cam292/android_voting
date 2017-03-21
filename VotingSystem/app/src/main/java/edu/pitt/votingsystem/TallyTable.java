@@ -14,13 +14,13 @@ public class TallyTable {
     /*
     * Constructor for class
      */
-    public TallyTable(List<String> cand) {
+    public TallyTable(String[] cand) {
 
         Voters = new HashMap<String, String>();
         Votes = new HashMap<String, Integer>();
 
-        for(String c : cand){ //initialize votes for each id to 0
-            Votes.put(c, 0);
+        for(int i=0; i<cand.length; i++){ //initialize votes for each id to 0
+            Votes.put(cand[i], 0);
         }
 
     }

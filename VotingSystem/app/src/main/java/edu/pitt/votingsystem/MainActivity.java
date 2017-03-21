@@ -2,6 +2,7 @@ package edu.pitt.votingsystem;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean voteSession;
     private SmsReceiver SmsReceiver = new SmsReceiver();
     public static TallyTable tally;
-    private String status;
+    public static String status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Voting System Already Started!", Toast.LENGTH_SHORT).show();
                 }
                 else if(tempCandidates.length() != 0){
-                    List candidates = Arrays.asList(tempCandidates.split(","));
-                    tally = new TallyTable(candidates);
+                    //List candidates = Arrays.asList(tempCandidates.split(","));
+                    //tally = new TallyTable(candidates);
                     voteSession = true;
                     status = "Polling for messages";
                     statusText.setText(status);
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     /*
     * Gets list of candidates/votes and displays to user
      */
-    private void printWinner(){
+    public static void printWinner(){
         status = "Calculating winner...";
         statusText.setText(status);
 

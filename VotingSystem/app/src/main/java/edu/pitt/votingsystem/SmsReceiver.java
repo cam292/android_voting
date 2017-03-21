@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.telephony.SmsManager;
 import android.widget.Toast;
-
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -38,23 +38,42 @@ public class SmsReceiver extends BroadcastReceiver {
                     }
                     String sender = messages[0].getOriginatingAddress();
                     String message = sb.toString();
-
+                    String[] msg = message.split(",");
                     SmsManager smsManager = SmsManager.getDefault();
-                    //smsManager.sendTextMessage(sender, null, "sms message", null, null);
-                    switch (edu.pitt.votingsystem.MainActivity.tally.castVote(sender, message)) {//try to cast vote
-                        case 1: //successful vote
-                            Toast.makeText(context, "successful vote", Toast.LENGTH_SHORT).show();
-                            smsManager.sendTextMessage(sender, null, "Vote Cast!", null, null);
+
+                    switch(msg[0]){
+                        case "702": //request report. aka end voting
+                            if(msg[1] == "1234"){
+                                edu.pitt.votingsystem.MainActivity.printWinner();
+                            } else {
+                                smsManager.sendTextMessage(sender,null, "Incorrect password",null,null);
+                            }
                             break;
-                        case 2: //duplicate vote
-                            //Toast.makeText(context, "duplicate voter", Toast.LENGTH_SHORT).show();
-                            smsManager.sendTextMessage(sender, null, "You have already voted!", null, null);
+                        case "703": //init tally table. message will be {'msgId', 'passcode', 'list of candidates'}
+                            if(msg[1] == "1234"){
+                                edu.pitt.votingsystem.MainActivity.tally = new TallyTable(Arrays.copyOfRange(msg,1,msg.length-1));
+                            } else {
+                                smsManager.sendTextMessage(sender,null, "Incorrect password",null,null);
+                            }
                             break;
-                        case 3: //invalid candidate id
-                            //Toast.makeText(context, "invalid candidate", Toast.LENGTH_SHORT).show();
-                            smsManager.sendTextMessage(sender, null, "Invalid candidate entered. Please try again", null, null);
-                            break;
+                        default:
+                            switch (edu.pitt.votingsystem.MainActivity.tally.castVote(sender, message)) {//try to cast vote
+                                case 1: //successful vote
+                                    Toast.makeText(context, "successful vote", Toast.LENGTH_SHORT).show();
+                                    smsManager.sendTextMessage(sender, null, "Vote Cast!", null, null);
+                                    break;
+                                case 2: //duplicate vote
+                                    Toast.makeText(context, "duplicate voter", Toast.LENGTH_SHORT).show();
+                                    smsManager.sendTextMessage(sender, null, "You have already voted!", null, null);
+                                    break;
+                                case 3: //invalid candidate id
+                                    Toast.makeText(context, "invalid candidate", Toast.LENGTH_SHORT).show();
+                                    smsManager.sendTextMessage(sender, null, "Invalid candidate entered. Please try again", null, null);
+                                    break;
+                            }
                     }
+
+
                 }
             }
         }
