@@ -18,6 +18,7 @@ import java.util.List;
 public class SmsReceiver extends BroadcastReceiver {
     public static TallyTable tally;
     public static String[] candidates;
+    private static boolean voting = false;
 
     private static final String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
     @Override
@@ -50,10 +51,10 @@ public class SmsReceiver extends BroadcastReceiver {
 
         switch(msg[0]){
             case "702": //request report. aka end voting
-                if(tally != null){
+                if(voting){
                     if(msg[1].equals("1234")){
+                        voting = false;
                         edu.pitt.votingsystem.viewTwo.changeStatus();
-                        //edu.pitt.votingsystem.viewThree.calcWinner(tally);
                     } else {
                         smsManager.sendTextMessage(sender,null, "Incorrect password",null,null);
                     }
@@ -67,7 +68,7 @@ public class SmsReceiver extends BroadcastReceiver {
                 if(msg[1].equals("1234")){
                     candidates = Arrays.copyOfRange(msg,2,msg.length);
                     tally = new TallyTable(candidates);
-
+                    voting = true;
                     edu.pitt.votingsystem.MainActivity.changeStatus();
 
                 } else {
@@ -75,7 +76,7 @@ public class SmsReceiver extends BroadcastReceiver {
                 }
                 break;
             default:
-                if(tally != null){
+                if(voting){
                     switch (tally.castVote(sender, message)) {//try to cast vote
                         case 1: //successful vote
                             smsManager.sendTextMessage(sender, null, "Vote Cast!", null, null);

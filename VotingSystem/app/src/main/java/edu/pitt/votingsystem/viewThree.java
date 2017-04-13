@@ -80,9 +80,8 @@ public class viewThree extends Activity {
             Map.Entry me2 = (Map.Entry)iterator2.next();
             if(i==0)
                 winner.setText(me2.getKey().toString());
-
-            //entries.add(new BarEntry(i,Float.parseFloat(me2.getValue().toString()),me2.getKey().toString()));
-            entries.add(new PieEntry(Float.parseFloat(me2.getValue().toString()),me2.getKey().toString()));
+            if((int)me2.getValue() > 0)
+                entries.add(new PieEntry((float)((int)me2.getValue()),me2.getKey().toString()));
             i++;
         }
 
