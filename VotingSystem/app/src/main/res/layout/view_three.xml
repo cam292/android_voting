@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="Voting Complete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:id="@+id/status"
+            android:textSize="24sp"
+            android:textColor="@color/colorPrimary" />
+
+        <TextView
+            android:text="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/winnerText"
+            android:textSize="18sp"
+            android:textStyle="normal|bold"
+            android:textColor="@color/colorAccent"
+            android:layout_alignBaseline="@+id/winnerLabel"
+            android:layout_alignBottom="@+id/winnerLabel"
+            android:layout_alignEnd="@+id/status" />
+
+        <TextView
+            android:text="The winner is... Candidate "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:id="@+id/winnerLabel"
+            android:textSize="18sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_below="@+id/status"
+            android:layout_toStartOf="@+id/winnerText" />
+
+        <Button
+            android:text="DONE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="52dp"
+            android:id="@+id/finishButton"
+            android:background="@color/colorAccent"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="normal|bold"
+            android:textSize="18sp" />
+
+
+    </RelativeLayout>
+</LinearLayout>

@@ -3,6 +3,7 @@ package edu.pitt.votingsystem;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.app.Activity;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.telephony.SmsManager;
@@ -15,12 +16,12 @@ import java.util.List;
  */
 
 public class SmsReceiver extends BroadcastReceiver {
-
+    public static TallyTable tally;
+    public static String[] candidates;
 
     private static final String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(edu.pitt.votingsystem.MainActivity.voteSession){
             if (intent.getAction().equals(SMS_RECEIVED)) {
                 Bundle bundle = intent.getExtras();
                 if (bundle != null) {
@@ -38,50 +39,61 @@ public class SmsReceiver extends BroadcastReceiver {
                     }
                     String sender = messages[0].getOriginatingAddress();
                     String message = sb.toString();
-                    String[] msg = message.split(",");
-                    SmsManager smsManager = SmsManager.getDefault();
-                    edu.pitt.votingsystem.MainActivity.statusText.setText(msg[0]);
-
-
-                    switch(msg[0]){
-                        case "702": //request report. aka end voting
-                            if(msg[1].equals("1234")){
-                                edu.pitt.votingsystem.MainActivity.printWinner();
-                            } else {
-                                smsManager.sendTextMessage(sender,null, "Incorrect password",null,null);
-                            }
-                            break;
-                        case "703": //init tally table. message will be {'msgId', 'passcode', 'list of candidates'}
-
-                            if(msg[1].equals("1234")){
-                                edu.pitt.votingsystem.MainActivity.statusText.setText("Tally table initialized");
-                                edu.pitt.votingsystem.MainActivity.tally = new TallyTable(Arrays.copyOfRange(msg,2,msg.length));
-                            } else {
-                                smsManager.sendTextMessage(sender,null, "Incorrect password",null,null);
-                            }
-                            break;
-                        default:
-                            edu.pitt.votingsystem.MainActivity.statusText.setText("Received vote");
-                            switch (edu.pitt.votingsystem.MainActivity.tally.castVote(sender, message)) {//try to cast vote
-                                case 1: //successful vote
-                                    Toast.makeText(context, "successful vote", Toast.LENGTH_SHORT).show();
-                                    smsManager.sendTextMessage(sender, null, "Vote Cast!", null, null);
-                                    break;
-                                case 2: //duplicate vote
-                                    Toast.makeText(context, "duplicate voter", Toast.LENGTH_SHORT).show();
-                                    smsManager.sendTextMessage(sender, null, "You have already voted!", null, null);
-                                    break;
-                                case 3: //invalid candidate id
-                                    Toast.makeText(context, "invalid candidate", Toast.LENGTH_SHORT).show();
-                                    smsManager.sendTextMessage(sender, null, "Invalid candidate entered. Please try again", null, null);
-                                    break;
-                            }
-                            break;
-                    }
-
+                    handleText(sender, message);
 
                 }
             }
+    }
+    public void handleText(String sender, String message){
+        String[] msg = message.split(",");
+        SmsManager smsManager = SmsManager.getDefault();
+
+        switch(msg[0]){
+            case "702": //request report. aka end voting
+                if(tally != null){
+                    if(msg[1].equals("1234")){
+                        edu.pitt.votingsystem.viewTwo.changeStatus();
+                        //edu.pitt.votingsystem.viewThree.calcWinner(tally);
+                    } else {
+                        smsManager.sendTextMessage(sender,null, "Incorrect password",null,null);
+                    }
+                }else{
+                    smsManager.sendTextMessage(sender,null, "Voting hasn't started!",null,null);
+                }
+
+                break;
+            case "703": //init tally table. message will be {'msgId', 'passcode', 'list of candidates'}
+
+                if(msg[1].equals("1234")){
+                    candidates = Arrays.copyOfRange(msg,2,msg.length);
+                    tally = new TallyTable(candidates);
+
+                    edu.pitt.votingsystem.MainActivity.changeStatus();
+
+                } else {
+                    smsManager.sendTextMessage(sender,null, "Incorrect password",null,null);
+                }
+                break;
+            default:
+                if(tally != null){
+                    switch (tally.castVote(sender, message)) {//try to cast vote
+                        case 1: //successful vote
+                            smsManager.sendTextMessage(sender, null, "Vote Cast!", null, null);
+                            edu.pitt.votingsystem.viewTwo.updateVotes();
+                            break;
+                        case 2: //duplicate vote
+                            smsManager.sendTextMessage(sender, null, "You have already voted!", null, null);
+                            break;
+                        case 3: //invalid candidate id
+                            smsManager.sendTextMessage(sender, null, "Invalid candidate entered. Please try again", null, null);
+                            break;
+                    }
+                }else{
+                    smsManager.sendTextMessage(sender,null, "Voting hasn't started!",null,null);
+                }
+
+                break;
         }
     }
+
 }

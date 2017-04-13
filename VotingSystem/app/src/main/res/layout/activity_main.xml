@@ -10,89 +10,37 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.pitt.votingsystem.MainActivity">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/adminPass"
-        tools:text="Admin Password"
-        android:background="@drawable/border"
-        android:layout_alignBaseline="@+id/Endbutton"
-        android:layout_alignBottom="@+id/Endbutton"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:text="Password:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/Endbutton"
-        android:layout_alignParentStart="true"
-        android:id="@+id/passLabel" />
-
-    <Button
-        android:text="End"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/Endbutton"
-        android:layout_marginBottom="52dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:text="Candidate List:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/candLabel"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="26dp" />
+        android:layout_marginTop="153dp">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/candListInput"
-        android:background="@drawable/border"
-        android:layout_below="@+id/candLabel"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp" />
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
 
-    <TextView
-        android:text="Current Status:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/statusLabel"
-        android:layout_below="@+id/candListInput"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="51dp" />
+            <TextView
+                android:text="Waiting for table initialization from an adminstrator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/statusLabel"
+                android:textSize="24sp"
+                android:textColor="@color/colorPrimary"
+                android:textAlignment="center" />
+        </TableRow>
 
-    <TextView
-        android:text="Status"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/statusLabel"
-        android:layout_marginTop="43dp"
-        android:id="@+id/statusText"
-        android:layout_width="match_parent" />
-
-    <TextView
-        android:text="  "
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/candListInput"
-        android:layout_toEndOf="@+id/statusLabel"
-        android:layout_marginStart="19dp"
-        android:id="@+id/candList" />
+    </TableLayout>
 
     <Button
-        android:text="Start"
+        android:text=" View Activity "
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/Startbutton"
-        android:layout_alignBaseline="@+id/candListInput"
-        android:layout_alignBottom="@+id/candListInput"
-        android:layout_alignParentEnd="true" />
-
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="64dp"
+        android:id="@+id/button"
+        android:background="@color/colorAccent"
+        android:textColor="@color/colorPrimaryDark" />
 </RelativeLayout>

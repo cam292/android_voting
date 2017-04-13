@@ -16,6 +16,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".viewTwo">
+
+        </activity>
+        <activity android:name=".viewThree">
+
+        </activity>
+
         <receiver android:name="edu.pitt.votingsystem.SmsReceiver" android:enabled="true">
             <intent-filter android:priority="2147483647">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="Table Initialized. Receiving Votes!"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/status"
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:textAlignment="center"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/candListLabel"
+            android:layout_marginTop="25dp" />
+
+        <TextView
+            android:text="Vote Count:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/candListLabel"
+            android:layout_alignStart="@+id/candListLabel"
+            android:layout_marginTop="37dp"
+            android:id="@+id/votesLabel"
+            android:textSize="18sp"
+            android:textColor="@color/colorAccent" />
+
+        <TextView
+            android:text="1,2,3,4,5,6,7,8"
+            android:layout_height="wrap_content"
+            android:id="@+id/candList"
+            android:layout_weight="1"
+            android:layout_marginTop="67dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="13dp"
+            android:layout_below="@+id/status"
+            android:layout_toEndOf="@+id/candListLabel" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/votes"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_alignBaseline="@+id/votesLabel"
+            android:layout_alignBottom="@+id/votesLabel"
+            android:layout_alignStart="@+id/candList" />
+
+        <TextView
+            android:text="Candidates:"
+            android:layout_height="wrap_content"
+            android:id="@+id/candListLabel"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_alignBottom="@+id/candList"
+            android:layout_alignParentStart="true"
+            android:textColor="@color/colorAccent" />
+
+        <Button
+            android:text="  View Results  "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="82dp"
+            android:id="@+id/resultsButton"
+            android:background="@color/colorAccent"
+            android:textColor="@color/colorPrimaryDark" />
+    </RelativeLayout>
+
+</LinearLayout>

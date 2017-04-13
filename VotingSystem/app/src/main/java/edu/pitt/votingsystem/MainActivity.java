@@ -2,99 +2,72 @@ package edu.pitt.votingsystem;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.content.Intent;
+import android.content.Context;
+import android.app.Activity;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.*;
 
 public class MainActivity extends AppCompatActivity {
-    private static Button startButton, endButton;
-    private static EditText adminPass;
-    public static TextView statusText;
-
-    public static boolean voteSession;
-    public static TallyTable tally;
-    public static String status;
+    private static Context context;
+    private static TextView status;
+    private static Button button;
+    private static boolean voting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        context = getApplicationContext();
 
-        voteSession = false;
+        voting = false;
+        status = (TextView)findViewById(R.id.statusLabel);
+        button = (Button)findViewById(R.id.button);
 
-        startButton = (Button) findViewById(R.id.Startbutton);
-        endButton = (Button) findViewById(R.id.Endbutton);
-        statusText = (TextView)findViewById(R.id.statusText);
-        adminPass = (EditText) findViewById(R.id.adminPass);
-
-        //logic to start voting
-        startButton.setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(voteSession){
-                    Toast.makeText(getApplicationContext(), "Voting System Already Started!", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    voteSession = true;
-                    status = "Polling for messages";
-                    statusText.setText(status);
-                    Toast.makeText(getApplicationContext(), "Voting System Started", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-
-
-        });
-
-
-        //logic to end voting
-        endButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String password = adminPass.getText().toString();
-                Toast.makeText(getApplicationContext(), String.valueOf(password.equals("1234")), Toast.LENGTH_SHORT).show();
-                if(password.equals("1234")){
-                    if(tally == null){
-                        Toast.makeText(getApplicationContext(), "Voting Never Started!", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-                        Toast.makeText(getApplicationContext(), "Voting System Stopped", Toast.LENGTH_SHORT).show();
-                        voteSession = false; //end voting loop
-                        adminPass.setText("");
-                        printWinner();
-                    }
+                if(voting){
+                    Intent intent = new Intent(context, viewTwo.class);
+                    startActivity(intent);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Incorrect Password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context,"Table has not been initialized!",Toast.LENGTH_LONG).show();
                 }
-
             }
-        });
 
+
+        });
     }
 
+
+    public static void changeStatus(){
+        voting = true;
+        status.setText("Table initialized! Click button to continue");
+        return;
+    }
     /*
     * Gets list of candidates/votes and displays to user
      */
     public static void printWinner(){
-        status = "Calculating winner...";
-        statusText.setText(status);
-
-        status = "Final votes are (poster->votes): \n";
-        HashMap<String,Integer> sorted = tally.getWinner();
-        Set set2 = sorted.entrySet();
-        Iterator iterator2 = set2.iterator();
-        while(iterator2.hasNext()) {
-            Map.Entry me2 = (Map.Entry)iterator2.next();
-            status += me2.getKey()+"->"+me2.getValue()+"\n";
-        }
-
-        statusText.setText(status);
-        tally = null;
+//        status = "Calculating winner...";
+//        statusText.setText(status);
+//
+//        status = "Final votes are (poster->votes): \n";
+//        HashMap<String,Integer> sorted = tally.getWinner();
+//        Set set2 = sorted.entrySet();
+//        Iterator iterator2 = set2.iterator();
+//        while(iterator2.hasNext()) {
+//            Map.Entry me2 = (Map.Entry)iterator2.next();
+//            status += me2.getKey()+"->"+me2.getValue()+"\n";
+//        }
+//
+//        statusText.setText(status);
+//        tally = null;
     }
+
 
 }
